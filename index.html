@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INSTITUTIONAL TRADER PRO - V5 Multi Asset Swing Scalping</title>
+<meta name="theme-color" content="#0b1220">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#e5e7eb;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:14px}
+.banner{background:#eab308;color:#111;border-radius:14px;padding:16px;margin-bottom:14px}
+.banner b{font-size:18px}.banner p{margin:6px 0 12px}.btn{border:0;border-radius:10px;padding:12px 14px;font-weight:700;cursor:pointer}
+.btn-dark{background:#111;color:#eab308}.btn-white{background:#fff;color:#111}.btn-gold{background:#eab308;color:#111}.btn-blue{background:#1e293b;color:#fff}.btn-red{background:#991b1b;color:#fff}.btn-green{background:#10b981;color:#fff;width:100%}
+.card{background:#111827;border:1px solid #eab30855;border-radius:16px;padding:16px;margin-bottom:14px}
+.card h2{margin:0 0 8px;font-size:18px}.muted{color:#9ca3af;font-size:13px;line-height:1.5}
+input,select{width:100%;background:#0f172a;border:1px solid #334155;color:#fff;border-radius:10px;padding:12px;margin:6px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.grid3,.grid2{grid-template-columns:1fr}}
+.badge{display:inline-block;padding:6px 10px;border-radius:20px;font-weight:800;font-size:12px;margin:2px}
+.gold{background:#eab308;color:#111}.green{background:#10b981;color:#fff}.red{background:#ef4444;color:#fff}.dark{background:#1f2937;color:#fff}
+.bias{border-radius:12px;padding:14px;font-weight:800}.bias.bull{background:#14532d}.bias.bear{background:#7f1d1d}.bias.side{background:#374151}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{border-bottom:1px solid #334155;padding:10px;text-align:left}th{color:#eab308}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:700px){.kpi{grid-template-columns:1fr 1fr}}
+.kpi div{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:12px}.kpi small{color:#9ca3af}.kpi b{font-size:20px;display:block;margin-top:4px}
+.chip{font-size:12px;background:#1e293b;padding:4px 8px;border-radius:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="banner"><b>📱 Install INSTITUTIONAL TRADER PRO ke HP kamu</b><p>Buka tanpa browser, ada ikon di home screen, lebih cepat & bisa offline. Gratis.</p><div style="display:flex;gap:10px"><button class="btn btn-dark" style="flex:1" onclick="alert('Di Chrome HP: Menu titik 3 > Add to Home screen / Install app. Di PC: ikon Install di address bar.')">Install App</button><button class="btn btn-white" style="flex:1" onclick="this.parentElement.parentElement.style.display='none'">Nanti</button></div><p style="font-size:12px;margin-top:10px">iPhone: Tap Share di Safari → Add to Home Screen. Android Chrome: Tap Install di atas atau Menu → Install app.</p></div>
+
+<div class="card"><h2>INSTITUTIONAL TRADER PRO <span style="color:#eab308">TM</span></h2><div class="muted">Versi PWA Full - V15 MULTI-ASSET + IDX JALAN B UTAMA (FINAL) - REAL-TIME ONLY - Input Manual Opsional - Gold • Crypto • Saham US • Saham IDX • Indices - 【entity-JustMarkets¦canonical_name=JustMarkets】 / Exchange</div><div style="margin-top:10px"><span class="badge gold">GITHUB PAGES</span><span class="badge green">MULTI-ASSET</span><span class="badge dark" id="srcBadge">Sumber: Manual</span></div></div>
+
+<div class="card" id="apiCard"><h2 style="display:flex;justify-content:space-between;align-items:center;gap:8px">LANGKAH 1: PANEL API KEY - TWELVE DATA <button class="btn btn-blue" style="width:auto;padding:8px 12px;font-size:12px" onclick="toggleApiPanel()" id="apiToggleBtn">Sembunyikan ▲</button></h2>
+<div id="apiCollapsed" style="display:none;background:#14532d;border:1px solid #22c55e;border-radius:12px;padding:12px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><div style="font-weight:800;color:#bbf7d0">🔒 API Key Tersimpan & Disembunyikan</div><div style="font-size:13px;color:#e2e8f0">Key: <b id="maskedKey">••••••••</b> &nbsp;•&nbsp; Aman untuk screenshot / screen-share</div></div><div style="display:flex;gap:8px"><button class="btn btn-gold" style="width:auto;padding:8px 14px" onclick="toggleApiPanel(true)">Ubah / Lihat</button><button class="btn btn-red" style="width:auto;padding:8px 14px" onclick="delKey()">Hapus</button></div></div>
+</div>
+<div id="apiExpanded"><p class="muted">Jangan bagikan API Key di chat. Paste hanya di kolom ini. Key disimpan di browser kamu (localStorage), tidak dikirim ke saya. Gratis: 800 kredit/hari, 8 request/menit. Kalau sudah tersimpan, panel ini otomatis terlipat dan key hanya tampil •••• + 4 digit terakhir.</p>
+<label>API KEY TWELVE DATA</label><div style="position:relative"><input id="apiKey" type="password" placeholder="Paste API Key Twelve Data kamu di sini" style="padding-right:52px"><button type="button" onclick="toggleKeyVisibility()" id="eyeBtn" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:#1e293b;border:1px solid #334155;color:#fff;border-radius:8px;padding:6px 10px;cursor:pointer">👁️</button></div>
+<div style="font-size:12px;color:#94a3b8;margin:4px 0 8px" id="keyStatus">Belum ada key tersimpan.</div>
+<div class="grid3"><button class="btn btn-gold" onclick="saveKey()">Simpan & Sembunyikan Key</button><button class="btn btn-blue" onclick="testConn()">Test Koneksi</button><button class="btn btn-red" onclick="delKey()">Hapus Key</button></div>
+<button class="btn" style="background:#1e293b;color:#fff;margin-top:8px" onclick="toggleApiPanel()">Sembunyikan Panel Ini → Nanti Bisa Dibuka Lagi</button></div>
+<div class="grid3"><div><label>INTERVAL</label><select id="interval"><option value="1min">1min - Scalping M1</option><option value="5min" selected>5min - Scalping M5</option><option value="15min">15min - M15</option><option value="30min">30min - M30</option><option value="1h">1h - H1</option><option value="4h">4h - H4 Swing</option><option value="1day">1day - D1</option></select></div>
+<div><label>KATEGORI ASET</label><select id="kategori" onchange="updSymbols()"><option value="GOLD_FOREX">🥇 Gold & Forex</option><option value="CRYPTO">₿ Crypto</option><option value="SAHAM_US">🇺🇸 Saham US</option><option value="SAHAM_IDX">🇮🇩 Saham IDX (Pro di Twelve Data - pakai Stooq Gratis)</option><option value="INDICES">📈 Indices</option></select></div>
+<div><label>SIMBOL</label><select id="simbol" onchange="onSymbolChange()"></select></div></div>
+<div><label>SIMBOL CUSTOM (Opsional - ketik manual, contoh: BTC/USD , AAPL , BBCA )</label><input id="customSymbol" placeholder="Kosongkan jika pakai dropdown di atas. Isi ini untuk simbol lain."></div>
+<div class="grid3"><div><label>MODAL SIMULASI ($)</label><input id="modal" type="number" value="5000"></div><div><label>RISIKO PER TRADE (%)</label><input id="riskPct" type="number" value="1" step="0.1"></div><div><label>AUTO-FETCH</label><select id="autoFetch"><option value="OFF" selected>OFF</option><option value="ON">ON - tiap 60 detik (JANGAN ON untuk IDX)</option></select></div></div>
+<button class="btn btn-green" onclick="fetchNow()">Tarik Candle Sekarang</button>
+<p class="muted" id="log">Belum ada tarikan. Paste key → Simpan Key → Test Koneksi → Tarik Candle.</p>
+<div style="background:#0f172a;border-radius:10px;padding:10px;font-size:13px" id="logBox">Log: menunggu...</div></div>
+
+
+<div id="idxWarn" style="display:none;background:#7f1d1d;border-radius:12px;padding:12px;margin-bottom:12px;font-weight:700">⚠️ SAHAM IDX (BBCA dll) TIDAK GRATIS di Twelve Data - butuh Pro/Venture berbayar. V15 FINAL: IDX pakai JALAN B PASTE sebagai jalur utama (Auto-fetch IDX sudah mentok di semua jalur gratis). Saham US, Crypto, Gold, Forex tetap pakai Auto-Fetch real-time (anti data lama Agustus) + dikunci ke Daily. Kalau masih DATA LAMA, itu berarti proxy-nya masih cache - pakai Jalan B Paste, itu yang paling fresh untuk IDX: Stooq (2 proxy x 2 format) + Yahoo Finance (2 proxy) (BBCA.JK). Kalau Stooq juga gagal, pakai Jalan B Paste di bawah. Saham US, Crypto, Gold, Forex tetap GRATIS di Twelve Data.</div>
+<div class="card"><h2>DATA REAL-TIME - OTOMATIS (Tidak Wajib Input Manual)</h2><div id="biasBox" class="bias side">Bias Otomatis: MENUNGGU DATA - Tarik candle dulu</div><p class="muted" id="biasDesc" style="margin-top:8px">Dihitung otomatis dari candle real-time Twelve Data. Kamu tidak perlu isi manual.</p>
+<div class="kpi" style="margin-top:12px"><div><small>HARGA TERAKHIR</small><b id="kPrice">-</b><span class="chip" id="kSym">-</span></div><div><small>PERUBAHAN (vs 20 candle lalu)</small><b id="kChange">-</b></div><div><small>HIGH / LOW (100 candle)</small><b id="kHL">-</b></div><div><small>UPDATE TERAKHIR</small><b id="kTime" style="font-size:14px">-</b></div></div></div>
+
+<div class="card"><h2>DASHBOARD - ENTRY ENGINE (Otomatis dari Candle)</h2><div style="overflow-x:auto"><table><tr><th>Aset</th><th>Bias</th><th>Entry</th><th>SL</th><th>TP1</th><th>TP2</th><th>R:R</th><th>Size / Lot</th><th>Confidence</th></tr><tr><td id="tSym">-</td><td id="tBias">-</td><td id="tEntry">-</td><td id="tSL">-</td><td id="tTP1">-</td><td id="tTP2">-</td><td id="tRR">-</td><td id="tSize">-</td><td id="tConf">-</td></tr></table></div><p class="muted" style="margin-top:10px">Cara baca: Entry = harga terakhir. SL = 1x ATR (volatilitas 20 candle). TP1 = 1.5x ATR, TP2 = 3x ATR. Untuk Gold/Forex Size = Lot. Untuk Crypto Size = koin (BTC/ETH). Untuk Saham Size = lembar saham. <b>Confidence = skor kualitas setup, bukan jaminan profit.</b> Harga Twelve Data adalah harga pasar umum, bisa beda 1-3 pips dari spread 【entity-JustMarkets¦canonical_name=JustMarkets】 - cek 【entity-JustMarkets¦canonical_name=JustMarkets】 sebelum eksekusi.</p></div>
+
+
+<div class="card" style="border-color:#10b981"><h2>📈 ENTRY PLAN - SWING (H4 / H1 - Tahan 1-3 Hari)</h2><p class="muted">Untuk XAUUSD / Forex / Crypto: pakai candle 4H. Untuk Saham: pakai candle 1D. SL lebih lebar, TP lebih jauh. Entry = tunggu pullback ke Entry, jangan kejar harga.</p><div style="overflow-x:auto"><table><tr><th>Aset</th><th>Bias Swing</th><th>Entry Swing</th><th>SL Swing</th><th>TP1 Swing</th><th>TP2 Swing</th><th>TP3 Swing</th><th>R:R</th><th>Size / Lot</th><th>Confidence</th></tr><tr><td id="swSym">-</td><td id="swBias">-</td><td id="swEntry">-</td><td id="swSL">-</td><td id="swTP1">-</td><td id="swTP2">-</td><td id="swTP3">-</td><td id="swRR">-</td><td id="swSize">-</td><td id="swConf">-</td></tr></table></div><p class="muted" id="swNote">Belum ada data Swing - Tarik Candle dulu. App akan otomatis tarik candle 4H untuk Swing (atau 1D untuk Saham).</p></div>
+
+<div class="card" style="border-color:#f59e0b"><h2>⚡ ENTRY PLAN - SCALPING (M15 / M5 / M3 - Tahan 15-60 Menit)</h2><p class="muted">Untuk XAUUSD / Forex / Crypto: pakai candle 5M / 15M. Untuk Saham: pakai candle 15M. SL ketat, TP cepat. Hanya ambil jika Confidence &ge; 65% dan harga dekat Entry (max 0.5x ATR). Jangan scalping saat spread melebar / news besar.</p><div style="overflow-x:auto"><table><tr><th>Aset</th><th>Bias Scalp</th><th>Entry Scalp</th><th>SL Scalp</th><th>TP1 Scalp</th><th>TP2 Scalp</th><th>R:R</th><th>Size / Lot</th><th>Confidence</th><th>Valid Sampai</th></tr><tr><td id="scSym">-</td><td id="scBias">-</td><td id="scEntry">-</td><td id="scSL">-</td><td id="scTP1">-</td><td id="scTP2">-</td><td id="scRR">-</td><td id="scSize">-</td><td id="scConf">-</td><td id="scValid">-</td></tr></table></div><p class="muted" id="scNote">Belum ada data Scalping - Tarik Candle dulu. App akan otomatis tarik candle 5M untuk Scalping (atau 15M untuk Saham).</p>
+<div class="grid3" style="margin-top:10px"><div><label>INTERVAL SCALPING</label><select id="scInterval"><option value="1min">1min - M1 / M3</option><option value="5min" selected>5min - M5</option><option value="15min">15min - M15</option></select></div><div><label>INTERVAL SWING</label><select id="swInterval"><option value="1h">1h - H1</option><option value="4h" selected>4h - H4</option><option value="1day">1day - D1 (Saham)</option></select></div><div><label>MODE PLAN</label><select id="planMode"><option value="BOTH" selected>Semua - Swing + Scalping</option><option value="SWING">Hanya Swing</option><option value="SCALP">Hanya Scalping</option></select></div></div>
+</div>
+
+<div class="card"><h2>🧭 MTF - MULTI TIMEFRAME (M5 / M15 / H1 / H4 / D1)</h2><p class="muted">Bias per timeframe dihitung dari candle masing-masing. Kalau semua timeframe searah = trend kuat. Kalau beda arah = rawan false breakout, kurangi lot.</p><div class="kpi"><div><small>M5 - SCALPING</small><b id="mtf5">-</b></div><div><small>M15</small><b id="mtf15">-</b></div><div><small>H1</small><b id="mtfH1">-</b></div><div><small>H4 - SWING</small><b id="mtfH4">-</b></div></div></div>
+
+<div class="card" style="border-color:#ef4444"><h2>📅 KALENDER EKONOMI & ⚠️ ALERT NEWS INCOMING</h2><p class="muted">Sumber: Forex Factory Weekly Calendar (Gratis, tanpa key) via CORS Proxy - V7 coba Direct + Proxy otomatis - <code>nfs.faireconomy.media/ff_calendar_thisweek.json</code>. Twelve Data tidak punya kalender ekonomi makro, hanya kalender Earnings/Dividen/IPO saham. Jadi untuk news makro kita pakai Forex Factory. Waktu otomatis dikonversi ke WIB (GMT+7).</p>
+<div id="newsAlert" style="background:#374151;border-radius:12px;padding:14px;font-weight:700;margin-bottom:10px">⏳ Mengecek news HIGH impact terdekat... Tap Tarik Kalender di bawah.</div>
+<div class="grid3"><div><label>FILTER IMPACT</label><select id="newsFilter"><option value="ALL">Semua Impact</option><option value="HIGH" selected>Hanya HIGH (Merah) - Wajib</option><option value="MEDIUM">MEDIUM + HIGH</option></select></div><div><label>FILTER MATA UANG</label><select id="newsCurr"><option value="ALL">Semua Mata Uang</option><option value="USD" selected>Hanya USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="JPY">JPY</option><option value="AUD">AUD</option></select></div><div><label>FILTER WAKTU</label><select id="newsTime"><option value="TODAY" selected>Hari Ini</option><option value="NEXT24">24 Jam Ke Depan</option><option value="WEEK">Seminggu Ini</option></select></div></div>
+<div style="display:flex;gap:10px;margin-top:8px"><button class="btn btn-gold" style="flex:1" onclick="fetchCalendar()">Tarik Kalender Ekonomi</button><button class="btn btn-blue" style="flex:1" onclick="toggleNewsAlert()">Test Bunyi Alert</button></div>
+<div style="overflow-x:auto;margin-top:12px"><table><tr><th>Waktu WIB</th><th>Negara</th><th>Event</th><th>Impact</th><th>Forecast</th><th>Previous</th><th>Actual</th><th>Hitung Mundur</th><th>Status</th></tr><tbody id="newsBody"><tr><td colspan="9" style="text-align:center;color:#9ca3af">Belum ada data - Tap Tarik Kalender Ekonomi</td></tr></tbody></table></div>
+<p class="muted" style="margin-top:10px"><b>Aturan News:</b> 🔴 HIGH + USD + &lt; 60 menit = <b>NO-TRADE ZONE</b> - Jangan entry Scalping, tutup Scalping yang jalan, kurangi lot Swing 50%. 🟠 HIGH + 60-120 menit = <b>SIAGA</b> - Jangan entry baru, pasang SL. 🟢 Tidak ada HIGH 2 jam ke depan = <b>AMAN ENTRY</b>. Earnings saham US (AAPL, NVDA dll) cek di Twelve Data Earnings Calendar - kalau ada earnings hari ini, saham itu volatile.</p>
+<div class="grid2" style="margin-top:10px"><div><label>EARNINGS SAHAM US - CEK MANUAL (Twelve Data)</label><input id="earnSym" placeholder="Contoh: NVDA" value="NVDA"><button class="btn btn-blue" style="margin-top:6px" onclick="fetchEarnings()">Cek Earnings NVDA / Simbol</button><p class="muted" id="earnBox">Belum dicek. Earnings = laporan keuangan, saham bisa lompat 5-15%.</p></div><div><label>PASTE KALENDER MANUAL (Jika Forex Factory Gagal - Jalan B)</label><textarea id="newsPaste" style="width:100%;height:80px;background:#0f172a;color:#fff;border-radius:10px;padding:8px" placeholder="2026-11-21 20:30,USD,CPI m/m,HIGH,0.3%,0.2%,-"></textarea><button class="btn btn-gold" style="margin-top:6px" onclick="calcNewsFromPaste()">Hitung dari Paste</button></div></div></div>
+<div class="card"><h2>PANDUAN SIMBOL - COPAS LANGSUNG</h2><p class="muted"><b>Crypto:</b> BTC/USD = Bitcoin, ETH/USD = Ethereum, SOL/USD = Solana, BNB/USD, XRP/USD, DOGE/USD<br><b>Saham US:</b> AAPL = Apple, MSFT = Microsoft, NVDA = Nvidia, TSLA = Tesla, AMZN = Amazon, META, GOOGL<br><b>Saham IDX:</b> BBCA, BBRI, BMRI, TLKM, ASII, ICBP, AMRT - <b>GRATIS di Twelve Data TIDAK BISA</b> (butuh Pro/Venture). V8 otomatis coba <b>Stooq Gratis (BBCA.JK)</b> untuk daily. Untuk intraday IDX, pakai Jalan B Paste dari Stockbit / TradingView. Harga IDX dalam IDR, bukan USD - modal di atas anggap dalam IDR kalau pilih IDX.<br><b>Indices:</b> SPX = S&P 500, NDX = Nasdaq 100, DJI = Dow Jones<br><b>Gold & Forex:</b> XAU/USD, EUR/USD, GBP/USD, USD/JPY</p></div>
+
+<div class="card"><h2>JALAN B - PASTE JSON / CSV CANDLE (Opsional, Jika API Gagal)</h2><p class="muted">Kalau API limit / CORS, paste candle dari 【entity-TradingView¦canonical_name=TradingView】 / broker di sini, lalu tap Hitung dari Paste. Format: datetime,open,high,low,close per baris.</p><textarea id="pasteBox" style="width:100%;height:100px;background:#0f172a;color:#fff;border-radius:10px;padding:10px" placeholder="2026-11-21 10:00,3556.10,3560.00,3550.00,3558.20"></textarea><button class="btn btn-gold" style="margin-top:8px" onclick="calcFromPaste()">Hitung dari Paste</button></div>
+
+</div>
+<script>
+const MAP={
+GOLD_FOREX:["XAU/USD","EUR/USD","GBP/USD","USD/JPY","AUD/USD","USD/CHF"],
+CRYPTO:["BTC/USD","ETH/USD","SOL/USD","BNB/USD","XRP/USD","DOGE/USD"],
+SAHAM_US:["AAPL","MSFT","NVDA","TSLA","AMZN","META","GOOGL"],
+SAHAM_IDX:["BBCA","BBRI","BMRI","TLKM","ASII","ICBP","AMRT"],
+INDICES:["SPX","NDX","DJI","US500","UK100"]
+};
+function updSymbols(){ onIDXWarn();const k=document.getElementById('kategori').value;const s=document.getElementById('simbol');s.innerHTML='';MAP[k].forEach(v=>{let o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)});onSymbolChange();}
+function getSymbol(){let c=document.getElementById('customSymbol').value.trim().toUpperCase();if(c) return c;return document.getElementById('simbol').value;}
+function onSymbolChange(){document.getElementById('kSym').textContent=getSymbol();}
+function fmt(sym,price){if(!price) return '-';if(sym.includes('JPY')) return price.toFixed(3);if(sym.includes('/USD')&&!sym.includes('XAU')&&!sym.includes('BTC')&&!sym.includes('ETH')) return price.toFixed(5);return price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function maskKey(k){ if(!k) return '••••••••'; return '••••' + k.slice(-4); }
+function toggleKeyVisibility(){ let inp=document.getElementById('apiKey'); let btn=document.getElementById('eyeBtn'); if(inp.type==='password'){ inp.type='text'; btn.textContent='🙈'; } else { inp.type='password'; btn.textContent='👁️'; } }
+function toggleApiPanel(forceOpen){
+  let exp=document.getElementById('apiExpanded'); let col=document.getElementById('apiCollapsed'); let btn=document.getElementById('apiToggleBtn');
+  let isHidden = exp.style.display==='none';
+  let shouldShow = forceOpen ? true : isHidden;
+  if(shouldShow){ exp.style.display='block'; col.style.display='none'; if(btn) btn.textContent='Sembunyikan ▲'; }
+  else { exp.style.display='none'; col.style.display='block'; if(btn) btn.textContent='Tampilkan ▼'; }
+  // Simpan preferensi lipat
+  try{ localStorage.setItem('td_api_collapsed', shouldShow ? '0':'1'); }catch(e){}
+}
+function refreshApiUI(){
+  let k = localStorage.getItem('td_key') || document.getElementById('apiKey').value.trim();
+  let maskedEl=document.getElementById('maskedKey'); let statusEl=document.getElementById('keyStatus'); let inp=document.getElementById('apiKey');
+  if(k){
+    if(maskedEl) maskedEl.textContent = maskKey(k);
+    if(statusEl) statusEl.textContent = '✅ Tersimpan: ' + maskKey(k) + ' — panel akan terlipat otomatis setelah Simpan.';
+    if(inp && !inp.value) inp.value = k;
+    // Auto-collapse kalau sudah tersimpan dan user pernah lipat / baru simpan
+    let pref = localStorage.getItem('td_api_collapsed');
+    if(pref==='1'){ let exp=document.getElementById('apiExpanded'); let col=document.getElementById('apiCollapsed'); let btn=document.getElementById('apiToggleBtn'); if(exp){exp.style.display='none';} if(col){col.style.display='block';} if(btn){btn.textContent='Tampilkan ▼';} }
+  } else {
+    if(statusEl) statusEl.textContent = 'Belum ada key tersimpan.';
+  }
+  // Pastikan input selalu password saat load
+  if(inp) inp.type='password';
+}
+function saveKey(){let k=document.getElementById('apiKey').value.trim();if(!k){alert('Paste key dulu');return;}localStorage.setItem('td_key',k);document.getElementById('log').textContent='Key tersimpan & disembunyikan.';document.getElementById('logBox').textContent='Log: key tersimpan & panel terlipat.'; document.getElementById('apiKey').type='password'; let eye=document.getElementById('eyeBtn'); if(eye) eye.textContent='👁️'; refreshApiUI(); toggleApiPanel(false); }
+function delKey(){localStorage.removeItem('td_key');localStorage.removeItem('td_api_collapsed');document.getElementById('apiKey').value='';refreshApiUI(); let exp=document.getElementById('apiExpanded'); let col=document.getElementById('apiCollapsed'); if(exp) exp.style.display='block'; if(col) col.style.display='none'; alert('Key dihapus');}
+async function testConn(){let k=document.getElementById('apiKey').value.trim()||localStorage.getItem('td_key');if(!k){alert('Paste key dulu');return;}let sym=getSymbol();let url=`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(sym)}&interval=5min&outputsize=2&apikey=${k}`;try{let r=await fetch(url);let j=await r.json();if(j.values){document.getElementById('srcBadge').textContent='Sumber: LIVE - TWELVE DATA';document.getElementById('logBox').textContent='Log: Test OK - '+sym+' - '+j.values[0].close;alert('LIVE - Terhubung ke Twelve Data untuk '+sym);}else{document.getElementById('logBox').textContent='Log: Test gagal - '+(j.message||JSON.stringify(j).slice(0,200));alert('Gagal: '+(j.message||'cek key / simbol'));}}catch(e){document.getElementById('logBox').textContent='Log: Error fetch - '+e.message;alert('Error: '+e.message);}}
+function calc(values,sym){values=values.slice().reverse();let closes=values.map(v=>parseFloat(v.close));let last=closes[closes.length-1];let sma20=closes.slice(-20).reduce((a,b)=>a+b,0)/Math.min(20,closes.length);let sma50=closes.slice(-50).reduce((a,b)=>a+b,0)/Math.min(50,closes.length);let trs=[];for(let i=1;i<values.length;i++){let h=parseFloat(values[i].high),l=parseFloat(values[i].low),pc=parseFloat(values[i-1].close);trs.push(Math.max(h-l,Math.abs(h-pc),Math.abs(l-pc)));}let atr=trs.slice(-20).reduce((a,b)=>a+b,0)/Math.max(1,Math.min(20,trs.length));let bias= last>sma20&&sma20>sma50?'BULLISH - BUY on Pullback': last<sma20&&sma20<sma50?'BEARISH - SELL on Pullback':'SIDEWAYS - Tunggu Breakout';let box=document.getElementById('biasBox');box.textContent='Bias Otomatis: '+bias;box.className='bias '+(bias.includes('BULLISH')?'bull':bias.includes('BEARISH')?'bear':'side');document.getElementById('biasDesc').textContent='Dihitung dari '+values.length+' candle '+sym+'. SMA20='+fmt(sym,sma20)+' SMA50='+fmt(sym,sma50)+' ATR='+fmt(sym,atr);
+let change=((last-closes[Math.max(0,closes.length-21)])/closes[Math.max(0,closes.length-21)]*100);document.getElementById('kPrice').textContent=fmt(sym,last);document.getElementById('kSym').textContent=sym;document.getElementById('kChange').textContent=change.toFixed(2)+'%';let highs=values.map(v=>parseFloat(v.high)),lows=values.map(v=>parseFloat(v.low));document.getElementById('kHL').textContent=fmt(sym,Math.max(...highs))+' / '+fmt(sym,Math.min(...lows));document.getElementById('kTime').textContent=values[values.length-1].datetime||new Date().toLocaleString('id-ID');
+  // V12: Cek data kadaluwarsa - kalau terakhir >3 hari lalu, beri peringatan merah
+  try{ let lastDate=new Date(values[values.length-1].datetime); let diffDays=(new Date()-lastDate)/(1000*60*60*24); if(!isNaN(diffDays) && diffDays>3){ document.getElementById('biasDesc').textContent+=' ⚠️ DATA LAMA! Update terakhir '+values[values.length-1].datetime+' ('+Math.round(diffDays)+' hari lalu) - JANGAN ENTRY pakai data ini. Pakai Jalan B Paste data terbaru dari Stockbit. Scroll ke bawah ke JALAN B, paste 20 Close dari Stockbit hari ini.'; document.getElementById('kTime').style.color='#f87171'; document.getElementById('kTime').style.fontWeight='800'; let lb=document.getElementById('logBox'); if(lb) lb.textContent+=' | ⚠️ DATA LAMA '+Math.round(diffDays)+' hari'; } else { document.getElementById('kTime').style.color=''; } }catch(e){}let isBull=bias.includes('BULLISH');let entry=last,sl=isBull?last-atr:last+atr,tp1=isBull?last+atr*1.5:last-atr*1.5,tp2=isBull?last+atr*3:last-atr*3;let modal=parseFloat(document.getElementById('modal').value||5000);let riskPct=parseFloat(document.getElementById('riskPct').value||1);let riskAmt=modal*riskPct/100;let size='-';let kat=document.getElementById('kategori').value;if(kat==='CRYPTO'){size=(riskAmt/atr).toFixed(4)+' koin';}else if(kat==='SAHAM_US'){size=Math.floor(riskAmt/atr)+' lembar';}else if(kat==='SAHAM_IDX'){ let riskPerLot=atr*100; let lots=Math.floor(riskAmt/riskPerLot); if(lots<=0){ size='0 Lot - Modal kurang! Ganti Modal ke 5.000.000 (IDR) untuk IDX'; } else { size=lots+' Lot ('+(lots*100)+' lembar)'; } }else{let lot=(riskAmt/(atr*100)).toFixed(2);size=lot+' Lot';}let conf= bias.includes('SIDEWAYS')?55: Math.min(88,62+Math.abs(last-sma20)/atr*8);document.getElementById('tSym').textContent=sym;document.getElementById('tBias').textContent=bias;document.getElementById('tEntry').textContent=fmt(sym,entry);document.getElementById('tSL').textContent=fmt(sym,sl);document.getElementById('tTP1').textContent=fmt(sym,tp1);document.getElementById('tTP2').textContent=fmt(sym,tp2);document.getElementById('tRR').textContent='1 : 1.5 / 1 : 3';document.getElementById('tSize').textContent=size;document.getElementById('tConf').textContent=Math.round(conf)+'%';document.getElementById('srcBadge').textContent='Sumber: LIVE - TWELVE DATA';}
+function planFromValues(values, sym, slMult, tp1Mult, tp2Mult, tp3Mult){
+  values=values.slice().reverse();
+  let closes=values.map(v=>parseFloat(v.close));
+  let last=closes[closes.length-1];
+  let sma20=closes.slice(-20).reduce((a,b)=>a+b,0)/Math.min(20,closes.length);
+  let sma50=closes.slice(-50).reduce((a,b)=>a+b,0)/Math.min(50,closes.length);
+  let trs=[]; for(let i=1;i<values.length;i++){let h=parseFloat(values[i].high),l=parseFloat(values[i].low),pc=parseFloat(values[i-1].close);trs.push(Math.max(h-l,Math.abs(h-pc),Math.abs(l-pc)));}
+  let atr=trs.slice(-20).reduce((a,b)=>a+b,0)/Math.max(1,Math.min(20,trs.length));
+  let bias= last>sma20&&sma20>sma50?'BULLISH': last<sma20&&sma20<sma50?'BEARISH':'SIDEWAYS';
+  let isBull=bias==='BULLISH';
+  let entry=last, sl=isBull?last-atr*slMult:last+atr*slMult, tp1=isBull?last+atr*tp1Mult:last-atr*tp1Mult, tp2=isBull?last+atr*tp2Mult:last-atr*tp2Mult, tp3=isBull?last+atr*tp3Mult:last-atr*tp3Mult;
+  let modal=parseFloat(document.getElementById('modal').value||5000); let riskPct=parseFloat(document.getElementById('riskPct').value||1); let riskAmt=modal*riskPct/100; let kat=document.getElementById('kategori').value; let size='-';
+  if(kat==='CRYPTO') size=(riskAmt/(atr*slMult)).toFixed(4)+' koin';
+  else if(kat==='SAHAM_US') size=Math.floor(riskAmt/(atr*slMult))+' lembar';
+  else if(kat==='SAHAM_IDX'){ let rpl=(atr*slMult)*100; let lots=Math.floor(riskAmt/rpl); size = lots<=0 ? '0 Lot - Modal kurang! Pakai 5.000.000 IDR' : lots+' Lot ('+(lots*100)+' lembar)'; }
+  else size=(riskAmt/((atr*slMult)*100)).toFixed(2)+' Lot';
+  let conf= bias==='SIDEWAYS'?52: Math.min(88,62+Math.abs(last-sma20)/atr*8);
+  return {bias,entry,sl,tp1,tp2,tp3,atr,last,sma20,sma50,size,conf};
+}
+function fillSwing(p){ if(!p) return; document.getElementById('swSym').textContent=getSymbol(); document.getElementById('swBias').textContent=p.bias; document.getElementById('swEntry').textContent=fmt(getSymbol(),p.entry); document.getElementById('swSL').textContent=fmt(getSymbol(),p.sl); document.getElementById('swTP1').textContent=fmt(getSymbol(),p.tp1); document.getElementById('swTP2').textContent=fmt(getSymbol(),p.tp2); document.getElementById('swTP3').textContent=fmt(getSymbol(),p.tp3); document.getElementById('swRR').textContent='1 : 2 / 1 : 3 / 1 : 4.5'; document.getElementById('swSize').textContent=p.size; document.getElementById('swConf').textContent=Math.round(p.conf)+'%'; document.getElementById('swNote').textContent='Swing dihitung dari candle '+document.getElementById('swInterval').value+' - ATR='+fmt(getSymbol(),p.atr)+' - SMA20='+fmt(getSymbol(),p.sma20)+' - Tahan 1-3 hari. Jangan entry kalau harga sudah jauh dari Entry.'; }
+function fillScalp(p){ if(!p) return; document.getElementById('scSym').textContent=getSymbol(); document.getElementById('scBias').textContent=p.bias; document.getElementById('scEntry').textContent=fmt(getSymbol(),p.entry); document.getElementById('scSL').textContent=fmt(getSymbol(),p.sl); document.getElementById('scTP1').textContent=fmt(getSymbol(),p.tp1); document.getElementById('scTP2').textContent=fmt(getSymbol(),p.tp2); document.getElementById('scRR').textContent='1 : 1.5 / 1 : 2.5'; document.getElementById('scSize').textContent=p.size; document.getElementById('scConf').textContent=Math.round(p.conf)+'%'; let valid=new Date(Date.now()+60*60*1000).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); document.getElementById('scValid').textContent='s/d '+valid+' WIB'; document.getElementById('scNote').textContent='Scalping dihitung dari candle '+document.getElementById('scInterval').value+' - ATR='+fmt(getSymbol(),p.atr)+' - Valid 60 menit, lewat dari itu tarik ulang.'; }
+let _isFetching=false; let _idxCache={sym:'', vals:null};
+function setLog(t){ let el=document.getElementById('logBox'); if(el) el.textContent=t; }
+async function fetchYahooIDX(sym){
+  let s = sym.toUpperCase()+'.JK';
+  let urls=[
+    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${s}?range=3mo&interval=1d&cb=${Date.now()}`),
+    'https://corsproxy.io/?url='+encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${s}?range=3mo&interval=1d&cb=${Date.now()}`),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(`https://query1.finance.yahoo.com/v8/finance/chart/${s}?range=3mo&interval=1d&cb=${Date.now()}`),
+    'https://corsproxy.io/?url='+encodeURIComponent(`https://query2.finance.yahoo.com/v8/finance/chart/${s}?range=3mo&interval=1d&cb=${Date.now()}`),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(`https://query2.finance.yahoo.com/v8/finance/chart/${s}?range=3mo&interval=1d&cb=${Date.now()}`)
+  ];
+  for(let idx=0; idx<urls.length; idx++){ let u=urls[idx]; setLog('Log: IDX - Jalur '+(idx+5)+'/8 Yahoo untuk '+sym+'...');
+    try{
+      let r=await fetch(u, {cache:'no-store'}); let j=await r.json();
+      let res=j.chart?.result?.[0]; if(!res) continue;
+      let ts=res.timestamp||[]; let q=res.indicators?.quote?.[0]; if(!q||!ts.length) continue;
+      let vals=ts.map((t,i)=>{ let d=new Date(t*1000); let ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); return {datetime:ds, open:q.open[i], high:q.high[i], low:q.low[i], close:q.close[i]}; }).filter(v=>v.close!=null);
+      if(vals.length>=5) return vals.slice(-100);
+    }catch(e){ console.log('yahoo fail', e.message); }
+  }
+  throw new Error('Yahoo IDX gagal');
+}
+async function fetchStooqIDX(sym, interval){
+  let s = sym.toLowerCase()+'.jk';
+  let urls = [
+    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(`https://stooq.com/q/d/l/?s=${s}&i=d&t=${Date.now()}`),
+    'https://corsproxy.io/?url='+encodeURIComponent(`https://stooq.com/q/d/l/?s=${s}&i=d&t=${Date.now()}`),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(`https://stooq.com/q/d/l/?s=${s}&i=d&t=${Date.now()}`),
+    'https://corsproxy.io/?url='+encodeURIComponent(`https://stooq.com/q/d/l/?s=${s}&f=sd2t2ohlcv&h&e=csv&t=${Date.now()}`),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent(`https://stooq.com/q/d/l/?s=${s}&f=sd2t2ohlcv&h&e=csv&t=${Date.now()}`)
+  ];
+  for(let idx=0; idx<urls.length; idx++){ let u=urls[idx]; setLog('Log: IDX - Jalur '+(idx+1)+'/4 Stooq untuk '+sym+'...');
+    try{
+      let r=await fetch(u, {cache:'no-store'}); let txt=await r.text();
+      if(txt.includes('No data')||txt.length<100) continue;
+      let lines=txt.trim().split('\n'); if(lines.length<5) continue;
+      let vals=lines.slice(1).map(l=>{let a=l.split(','); return {datetime:a[0], open:a[1], high:a[2], low:a[3], close:a[4]};}).filter(v=>v.close && v.close!=='null' && v.close!=='N/D');
+      if(vals.length>=5) return vals.slice(-100);
+    }catch(e){ console.log('stooq fail', e.message); }
+  }
+  // Kalau Stooq semua gagal, coba Yahoo
+  return await fetchYahooIDX(sym);
+}
+async function fetchOne(sym,k,interval,kat){
+  if(kat==='SAHAM_IDX'){
+    // V11: Cache - kalau simbol sama sudah ditarik, pakai lagi, jangan tarik 5x
+    if(_idxCache.sym===sym && _idxCache.vals) return _idxCache.vals;
+    setLog('Log: IDX '+sym+' - Twelve Data Pro? Coba jalur gratis...');
+    try{
+      let url=`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(sym)}&interval=1day&outputsize=100&apikey=${k}&exchange=IDX`;
+      let r=await fetch(url); let j=await r.json();
+      if(j.values){ _idxCache={sym, vals:j.values}; return j.values; }
+      if((j.message||'').includes('Pro or Venture')) throw new Error('PRO_NEEDED');
+      throw new Error(j.message||'No values '+interval);
+    }catch(e){
+      setLog('Log: IDX Pro di Twelve Data, coba Stooq/Yahoo gratis (8 jalur)...');
+      let vals = await fetchStooqIDX(sym, interval);
+      _idxCache={sym, vals};
+      return vals;
+    }
+  }
+  let url=`https://api.twelvedata.com/time_series?symbol=${encodeURIComponent(sym)}&interval=${interval}&outputsize=100&apikey=${k}`; let r=await fetch(url); let j=await r.json(); if(!j.values) throw new Error(j.message||'No values '+interval); return j.values;
+}
+function onIDXWarn(){
+  // V15 FINAL: Untuk IDX, matikan Tarik Candle auto, jadikan Jalan B sebagai jalur utama
+  try{
+    let kat=document.getElementById('kategori').value;
+    let btn=document.querySelector('button[onclick="fetchNow()"]');
+    let jalanBTop=document.getElementById('idxJalanBTop');
+    if(kat==='SAHAM_IDX'){
+      if(btn){ btn.textContent='IDX Pakai Jalan B Paste di Bawah (Auto-Fetch IDX Sudah Mentok)'; btn.style.background='#7f1d1d'; btn.style.opacity='0.7'; }
+      if(!jalanBTop){
+        let div=document.createElement('div');
+        div.id='idxJalanBTop';
+        div.style.cssText='background:#14532d;border:2px solid #22c55e;border-radius:12px;padding:14px;margin:12px 0';
+        div.innerHTML='<div style="font-weight:800;color:#bbf7d0;font-size:16px">✅ MODE IDX: JALAN B PASTE (Paling Fresh, 30 Detik)</div><div style="color:#e2e8f0;font-size:13px;margin:6px 0">Auto-fetch IDX sudah mentok di semua jalur gratis (Twelve Data Pro, Stooq cache Agustus, Yahoo gagal). Jangan buang waktu tarik lagi. Pakai cara ini:</div><div style="color:#fff;font-size:13px;line-height:1.6">1. Buka <b>Stockbit → BBRI / BBCA → Daily</b><br>2. Copy <b>20 harga Close terakhir</b> (yang terbaru paling bawah)<br>3. Scroll ke bawah ke <b>JALAN B - PASTE</b>, paste 20 angka itu (1 angka per baris)<br>4. Tap <b>Hitung dari Paste</b> → langsung muncul Bias, Entry, SL, TP hari ini</div><button class="btn btn-green" style="margin-top:10px" onclick="document.getElementById(\'pasteBox\').scrollIntoView({behavior:\'smooth\'})">⬇️ Scroll ke Jalan B Paste</button>';
+        let card=document.getElementById('apiCard'); if(card) card.after(div);
+      } else { jalanBTop.style.display='block'; }
+    } else {
+      if(btn){ btn.textContent='Tarik Candle Sekarang'; btn.style.background=''; btn.style.opacity=''; }
+      if(jalanBTop) jalanBTop.style.display='none';
+    }
+  }catch(e){}
+
+  // V12: Ubah label Modal jadi IDR kalau IDX
+  try{ let kat=document.getElementById('kategori').value; if(kat==='SAHAM_IDX'){ let af=document.getElementById('autoFetch'); if(af && af.value==='ON'){ af.value='OFF'; try{localStorage.setItem('td_autofetch','OFF');}catch(e){} } } let labels=document.querySelectorAll('label'); labels.forEach(l=>{ if(l.textContent.includes('MODAL SIMULASI')){ l.textContent = (kat==='SAHAM_IDX') ? 'MODAL SIMULASI (IDR untuk IDX - contoh: 5000000)' : 'MODAL SIMULASI ($)'; } }); let modalEl=document.getElementById('modal'); if(modalEl && kat==='SAHAM_IDX' && parseFloat(modalEl.value)<100000){ modalEl.placeholder='Untuk IDX isi 5000000 (IDR), bukan 5000'; } }catch(e){}
+  let kat=document.getElementById('kategori').value;
+  let w=document.getElementById('idxWarn');
+  if(w) w.style.display = (kat==='SAHAM_IDX') ? 'block' : 'none';
+  // Modal label: IDX pakai IDR
+  let modalLabel = document.querySelector('label');
+}
+
+async function fetchNow(){ if(_isFetching){ setLog('Log: Masih menarik data, tunggu sampai selesai...'); return; } _isFetching=true; onIDXWarn();let k=document.getElementById('apiKey').value.trim()||localStorage.getItem('td_key');if(!k){alert('Paste key dulu di panel atas');return;}let sym=getSymbol();let interval=document.getElementById('interval').value;let kat=document.getElementById('kategori').value; if(kat==='SAHAM_IDX'){ setLog('Log: IDX pakai Jalan B Paste - Auto-fetch sudah mentok. Scroll ke bawah, paste 20 Close dari Stockbit.'); document.getElementById('pasteBox').scrollIntoView({behavior:'smooth'}); _isFetching=false; return; } if(kat==='SAHAM_IDX'){ interval='1day'; let ivEl=document.getElementById('interval'); if(ivEl) ivEl.value='1day'; setLog('Log: IDX dikunci ke 1day (Daily) - IDX gratis tidak ada 5 menit.'); }let mode=document.getElementById('planMode')?document.getElementById('planMode').value:'BOTH';document.getElementById('logBox').textContent='Log: menarik '+sym+' (Main + Swing + Scalping) ...';try{let mainVals=await fetchOne(sym,k,interval,kat);calc(mainVals,sym);document.getElementById('logBox').textContent='Log: OK Main - '+sym+' - '+mainVals.length+' candle'; if(kat==='SAHAM_IDX'){ let p=planFromValues(mainVals,sym,1.5,2,3,4.5); fillSwing(p); let ps=planFromValues(mainVals,sym,1,1.5,2.5,2.5); fillScalp(ps); document.getElementById('mtfH4').textContent=p.bias; document.getElementById('mtfH1').textContent=p.bias; document.getElementById('mtf15').textContent=p.bias; document.getElementById('mtf5').textContent=p.bias; document.getElementById('logBox').textContent+=' | IDX Daily OK - Swing+Scalping pakai data Daily yang sama (1x tarik)'; _isFetching=false; return; } let swInt=document.getElementById('swInterval').value;let scInt=document.getElementById('scInterval').value;try{ if(mode!=='SCALP'){let swVals=await fetchOne(sym,k,swInt,kat);let p=planFromValues(swVals,sym,1.5,2,3,4.5);fillSwing(p);document.getElementById('mtfH4').textContent=p.bias;} }catch(e){document.getElementById('swNote').textContent='Swing gagal: '+e.message;}try{ if(mode!=='SWING'){let scVals=await fetchOne(sym,k,scInt,kat);let p=planFromValues(scVals,sym,1,1.5,2.5,2.5);fillScalp(p);document.getElementById('mtf5').textContent=p.bias;} }catch(e){document.getElementById('scNote').textContent='Scalping gagal: '+e.message;}try{let h1Vals=await fetchOne(sym,k,'1h',kat);let ph=planFromValues(h1Vals,sym,1.5,2,3,4.5);document.getElementById('mtfH1').textContent=ph.bias;}catch(e){}try{let m15Vals=await fetchOne(sym,k,'15min',kat);let pm=planFromValues(m15Vals,sym,1,1.5,2.5,2.5);document.getElementById('mtf15').textContent=pm.bias;}catch(e){}document.getElementById('logBox').textContent+=' | Swing + Scalping OK'; _isFetching=false; }catch(e){ _isFetching=false; document.getElementById('logBox').textContent='Log: Gagal - '+e.message+' - Data lama tidak diubah. Pakai Jalan B Paste di bawah untuk '+sym+'.'; /* TIDAK pakai alert() lagi biar tidak nge-block layar */ }}
+function calcFromPaste(){let txt=document.getElementById('pasteBox').value.trim();if(!txt){alert('Paste candle dulu');return;}
+  // Mode 1: Format lengkap datetime,open,high,low,close
+  let rows=txt.split('\n').map(l=>l.split(',')).filter(a=>a.length>=5).map(a=>({datetime:a[0],open:a[1],high:a[2],low:a[3],close:a[4]}));
+  // Mode 2 (BARU untuk IDX): Paste hanya harga Close per baris, contoh: 4400\n4380\n4420 ... -> auto jadi OHLC
+  if(rows.length<5){
+    let nums=txt.split(/\n|,/).map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n));
+    if(nums.length>=5){ rows=nums.map((c,i)=>{ let d=new Date(); d.setDate(d.getDate()-(nums.length-1-i)); let ds=d.toISOString().slice(0,10); return {datetime:ds, open:c, high:c*1.005, low:c*0.995, close:c}; }); }
+  }
+  if(rows.length<5){alert('Butuh minimal 5 baris. Bisa paste lengkap (tanggal,open,high,low,close) ATAU hanya harga Close per baris untuk IDX.');return;}calc(rows,getSymbol());document.getElementById('srcBadge').textContent='Sumber: SIMULASI / PASTE';}
+window.onload=()=>{let k=localStorage.getItem('td_key');if(k) document.getElementById('apiKey').value=k;
+  // V14: Pulihkan Modal & Auto-Fetch yang tersimpan, jangan reset ke 5000 / ON
+  try{ let m=localStorage.getItem('td_modal'); if(m) document.getElementById('modal').value=m; let af=localStorage.getItem('td_autofetch'); if(af) document.getElementById('autoFetch').value=af; let rp=localStorage.getItem('td_risk'); if(rp) document.getElementById('riskPct').value=rp; }catch(e){}
+  document.getElementById('modal').addEventListener('change', e=>{ try{localStorage.setItem('td_modal', e.target.value);}catch(e){} });
+  document.getElementById('autoFetch').addEventListener('change', e=>{ try{localStorage.setItem('td_autofetch', e.target.value);}catch(e){} });
+  document.getElementById('riskPct').addEventListener('change', e=>{ try{localStorage.setItem('td_risk', e.target.value);}catch(e){} });
+  updSymbols();setInterval(()=>{if(document.getElementById('autoFetch').value==='ON') fetchNow();},60000);if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}};
+
+let NEWS_DATA=[];
+function etToWIB(dateStr,timeStr){
+  // Forex Factory date: MM-DD-YYYY, time: 08:30am ET
+  try{
+    let [m,d,y]=dateStr.split('-').map(Number);
+    let t=timeStr.toLowerCase().replace('am',' AM').replace('pm',' PM');
+    let dt=new Date(`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')} ${t} GMT-0500`);
+    // ET (EST) -> WIB = +12 jam
+    dt=new Date(dt.getTime()+12*60*60*1000);
+    return dt;
+  }catch(e){ return new Date(); }
+}
+function fmtWIB(dt){ return dt.toLocaleString('id-ID',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}); }
+function renderNews(){
+  let f=document.getElementById('newsFilter').value, c=document.getElementById('newsCurr').value, tm=document.getElementById('newsTime').value;
+  let now=new Date(); let rows=NEWS_DATA.filter(e=>{
+    if(f==='HIGH' && e.impact!=='High') return false;
+    if(f==='MEDIUM' && e.impact==='Low') return false;
+    if(c!=='ALL' && e.country!==c) return false;
+    if(tm==='TODAY'){ let d=new Date(e.wib); return d.getDate()===now.getDate() && d.getMonth()===now.getMonth(); }
+    if(tm==='NEXT24'){ return e.wib>=now && e.wib<=new Date(now.getTime()+24*3600*1000); }
+    return true;
+  }).sort((a,b)=>a.wib-b.wib);
+  let tb=document.getElementById('newsBody');
+  if(!rows.length){ tb.innerHTML='<tr><td colspan="9" style="text-align:center">Tidak ada event sesuai filter. Coba filter ALL / WEEK.</td></tr>'; return; }
+  tb.innerHTML=rows.slice(0,40).map(e=>{
+    let diff=Math.round((e.wib-now)/60000); let cd= diff<0? 'Sudah lewat': diff<60? diff+' menit lagi': Math.floor(diff/60)+' jam '+ (diff%60)+' mnt lagi';
+    let status= diff<0? 'Selesai': (e.impact==='High'&&diff>=0&&diff<=60)? '🔴 NO-TRADE': (e.impact==='High'&&diff>60&&diff<=120)? '🟠 SIAGA':'🟢 Aman';
+    let col=e.impact==='High'?'#ef4444':e.impact==='Medium'?'#f59e0b':'#9ca3af';
+    return `<tr><td>${fmtWIB(e.wib)} WIB</td><td>${e.country}</td><td>${e.title}</td><td style="color:${col};font-weight:800">${e.impact}</td><td>${e.forecast||'-'}</td><td>${e.previous||'-'}</td><td>${e.actual||'-'}</td><td>${cd}</td><td>${status}</td></tr>`;
+  }).join('');
+  // Alert
+  let highSoon=NEWS_DATA.filter(e=>e.impact==='High' && e.wib>=now && e.wib<=new Date(now.getTime()+120*60000)).sort((a,b)=>a.wib-b.wib)[0];
+  let alertBox=document.getElementById('newsAlert');
+  if(highSoon){
+    let diff=Math.round((highSoon.wib-now)/60000);
+    if(diff<=60){ alertBox.style.background='#7f1d1d'; alertBox.innerHTML=`🔴 ALERT NEWS INCOMING - NO-TRADE ZONE - <b>${highSoon.country} ${highSoon.title}</b> dalam <b>${diff} menit</b> (${fmtWIB(highSoon.wib)} WIB) - JANGAN ENTRY SCALPING, tutup Scalping jalan, kurangi lot Swing 50%.`; }
+    else { alertBox.style.background='#92400e'; alertBox.innerHTML=`🟠 SIAGA NEWS - <b>${highSoon.country} ${highSoon.title}</b> dalam <b>${diff} menit</b> (${fmtWIB(highSoon.wib)} WIB) - Jangan entry baru, pasang SL.`; }
+  } else {
+    alertBox.style.background='#14532d'; alertBox.innerHTML='🟢 AMAN ENTRY - Tidak ada news HIGH impact 2 jam ke depan. Boleh entry sesuai plan Swing / Scalping.';
+  }
+}
+async function fetchCalendar(){
+  document.getElementById('newsAlert').textContent='⏳ Menarik kalender Forex Factory via 3 jalur (Direct -> Proxy 1 -> Proxy 2)...';
+  const urls=[
+    'https://nfs.faireconomy.media/ff_calendar_thisweek.json',
+    'https://corsproxy.io/?url='+encodeURIComponent('https://nfs.faireconomy.media/ff_calendar_thisweek.json'),
+    'https://api.allorigins.win/raw?url='+encodeURIComponent('https://nfs.faireconomy.media/ff_calendar_thisweek.json'),
+    'https://nfs.faireconomy.media/ff_calendar_nextweek.json',
+    'https://corsproxy.io/?url='+encodeURIComponent('https://nfs.faireconomy.media/ff_calendar_nextweek.json')
+  ];
+  for(let i=0;i<urls.length;i++){
+    try{
+      let r=await fetch(urls[i]);
+      if(!r.ok) continue;
+      let j=await r.json();
+      if(!Array.isArray(j) || !j.length) continue;
+      NEWS_DATA=j.map(e=>({title:e.title, country:e.country, date:e.date, time:e.time, impact:e.impact, forecast:e.forecast, previous:e.previous, actual:e.actual||'', wib: etToWIB(e.date, e.time)}));
+      renderNews();
+      document.getElementById('logBox').textContent+=' | Kalender OK via jalur '+(i+1)+': '+NEWS_DATA.length+' event';
+      return;
+    }catch(e){ console.log('jalur '+(i+1)+' gagal', e.message); }
+  }
+  document.getElementById('newsAlert').textContent='⚠️ Semua jalur Forex Factory kena blokir CORS di browser ini - Pakai Jalan B di bawah (Paste 30 detik, paling bisa diandalkan). Buka forexfactory.com/calendar di tab baru, copy event HIGH USD hari ini.';
+  document.getElementById('newsBody').innerHTML='<tr><td colspan="9" style="text-align:center">Semua jalur gagal (CORS). Pakai Jalan B: buka forexfactory.com/calendar, copy event HIGH USD, paste di bawah. Format: YYYY-MM-DD HH:MM,USD,Event,HIGH,Forecast,Previous,-</td></tr>';
+}
+function calcNewsFromPaste(){
+  let txt=document.getElementById('newsPaste').value.trim(); if(!txt){alert('Paste dulu');return;}
+  NEWS_DATA=txt.split('\n').map(l=>{let a=l.split(','); let dt=new Date(a[0]); return {wib:dt, country:a[1]||'USD', title:a[2]||'Event', impact:(a[3]||'HIGH').toUpperCase()==='HIGH'?'High':a[3], forecast:a[4]||'-', previous:a[5]||'-', actual:a[6]||''};});
+  renderNews();
+}
+function toggleNewsAlert(){ try{ let ctx=new (window.AudioContext||window.webkitAudioContext)(); let o=ctx.createOscillator(); o.connect(ctx.destination); o.frequency.value=880; o.start(); setTimeout(()=>o.stop(),600); }catch(e){} alert('Ini bunyi alert contoh. Alert asli muncul otomatis kalau ada HIGH impact < 60 menit.'); }
+async function fetchEarnings(){
+  let k=document.getElementById('apiKey').value.trim()||localStorage.getItem('td_key'); if(!k){alert('Paste key dulu');return;}
+  let sym=(document.getElementById('earnSym').value||'NVDA').trim().toUpperCase();
+  document.getElementById('earnBox').textContent='Mengecek earnings '+sym+'...';
+  try{ let r=await fetch(`https://api.twelvedata.com/earnings_calendar?symbol=${sym}&apikey=${k}`); let j=await r.json(); let arr=j.calendar||j.data||[]; if(!arr.length){ document.getElementById('earnBox').textContent='Tidak ada earnings terdekat untuk '+sym+' di Twelve Data.'; return; } document.getElementById('earnBox').innerHTML='Earnings '+sym+': '+arr.slice(0,3).map(x=> (x.date||x.report_date||'')+' - EPS est: '+(x.eps_estimate||x.eps||'-')).join(' | '); }catch(e){ document.getElementById('earnBox').textContent='Gagal: '+e.message; }
+}
+document.getElementById('newsFilter').addEventListener('change', renderNews);
+document.getElementById('newsCurr').addEventListener('change', renderNews);
+document.getElementById('newsTime').addEventListener('change', renderNews);
+
+</script>
+<script>document.addEventListener("DOMContentLoaded", function(){ setTimeout(refreshApiUI, 300); });</script></body>
+</html>
